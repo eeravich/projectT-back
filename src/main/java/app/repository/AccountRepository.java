@@ -1,7 +1,9 @@
 package app.repository;
 
+import app.entities.pojos.AccountPojo;
 import app.generated.jooq.Sequences;
 import app.generated.jooq.tables.pojos.Account;
+import app.generated.jooq.tables.pojos.Role;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
@@ -10,13 +12,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static app.generated.jooq.Tables.ACCOUNT;
+import static app.generated.jooq.Tables.ROLE;
 
 @Repository
 @RequiredArgsConstructor
 public class AccountRepository {
     private final DSLContext dslContext;
 
-    public Account getById(Long accountId) {
+    public Account getById(Long id) {
         return dslContext.select(
                     ACCOUNT.ID,
                     ACCOUNT.ACCOUNT_ID,
@@ -27,11 +30,11 @@ public class AccountRepository {
                     ACCOUNT.PHONE,
                     ACCOUNT.NAME,
                     ACCOUNT.SURNAME,
-                    ACCOUNT.IS_ADMIN,
+                    ACCOUNT.ROLE_ID,
                     ACCOUNT.IS_BLOCKED
                 )
                 .from(ACCOUNT)
-                .where(ACCOUNT.ID.eq(accountId))
+                .where(ACCOUNT.ID.eq(id))
                 .fetchOneInto(Account.class);
     }
 
@@ -45,13 +48,26 @@ public class AccountRepository {
                 .set(ACCOUNT.NAME, account.getName())
                 .set(ACCOUNT.SURNAME, account.getSurname())
                 .set(ACCOUNT.PHONE, account.getPhone())
-                .set(ACCOUNT.IS_ADMIN, account.getIsAdmin())
+                .set(ACCOUNT.ROLE_ID, account.getRoleId())
                 .set(ACCOUNT.IS_BLOCKED, account.getIsBlocked())
                 .execute();
     }
 
     public Account getActualAccountById(Long accountId) {
-        return dslContext.selectFrom(ACCOUNT)
+        return dslContext.select(
+                        ACCOUNT.ID,
+                        ACCOUNT.ACCOUNT_ID,
+                        ACCOUNT.DELETED_DATETIME,
+                        ACCOUNT.DELETED_DATETIME,
+                        ACCOUNT.EMAIL,
+                        ACCOUNT.LOGIN,
+                        ACCOUNT.PHONE,
+                        ACCOUNT.NAME,
+                        ACCOUNT.SURNAME,
+                        ACCOUNT.ROLE_ID,
+                        ACCOUNT.IS_BLOCKED
+                )
+                .from(ACCOUNT)
                 .where(ACCOUNT.ACCOUNT_ID.eq(accountId), ACCOUNT.DELETED_DATETIME.isNull())
                 .fetchOneInto(Account.class);
     }
@@ -73,10 +89,13 @@ public class AccountRepository {
                 .fetchInto(Account.class);
     }
 
-    public Account findByLogin(String login) {
-        return dslContext.selectFrom(ACCOUNT)
+    public AccountPojo findByLogin(String login) {
+        return dslContext.select(ACCOUNT.fields())
+                .select(ROLE.NAME.as("roleName"))
+                .from(ACCOUNT)
+                .leftJoin(ROLE).on(ACCOUNT.ROLE_ID.eq(ROLE.ID))
                 .where(ACCOUNT.LOGIN.eq(login), ACCOUNT.DELETED_DATETIME.isNull())
-                .fetchOneInto(Account.class);
+                .fetchOneInto(AccountPojo.class);
     }
 
     public Account findByPhone(String phone) {

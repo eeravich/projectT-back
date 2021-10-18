@@ -49,8 +49,6 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling()
                 .and()
-                .sessionManagement()
-                .and()
                 .logout(logout -> logout.logoutUrl("/logout")
                         .invalidateHttpSession(true)
                         .addLogoutHandler(((request, response, authentication) -> {
@@ -60,7 +58,10 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
                                 e.printStackTrace();
                             }
                         }))
-                );
+                )
+                .sessionManagement()
+                .maximumSessions(1)
+                .maxSessionsPreventsLogin(true);
         http.addFilterAfter(userContextFilter, UsernamePasswordAuthenticationFilter.class);
     }
 

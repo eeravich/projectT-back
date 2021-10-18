@@ -3,6 +3,7 @@ package app.controllers;
 import app.generated.jooq.tables.pojos.Account;
 import app.services.AccountService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,11 +16,13 @@ public class AccountController {
     private final AccountService service;
 
     @GetMapping("/list")
+    @Secured({"ROLE_ADMIN"})
     public List<Account> getList() {
         return service.getList();
     }
 
     @GetMapping("/{accountId}")
+    @Secured({"ROLE_USER"})
     public Account getById(@PathVariable Long accountId) {
         return service.getById(accountId);
     }

@@ -3,6 +3,7 @@ package app.controllers;
 import app.generated.jooq.tables.pojos.Component;
 import app.services.ComponentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
