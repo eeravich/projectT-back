@@ -23,7 +23,7 @@ public class ComboService {
 
     public ComboPojo getById(Long comboId) {
         ComboPojo comboPojo = repository.getById(comboId);
-        comboPojo.setDiscounts(repository.getDiscountsByProductId(comboId));
+        comboPojo.setDiscounts(repository.getDiscountsByComboId(comboId));
         return comboPojo;
     }
 

@@ -2,10 +2,7 @@ package app.repository;
 
 import app.entities.pojos.ProductPojo;
 import app.generated.jooq.Sequences;
-import app.generated.jooq.tables.pojos.Component;
-import app.generated.jooq.tables.pojos.Discount;
-import app.generated.jooq.tables.pojos.Product;
-import app.generated.jooq.tables.pojos.RefProductComponent;
+import app.generated.jooq.tables.pojos.*;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
@@ -92,5 +89,10 @@ public class ProductRepository {
                 .leftJoin(DISCOUNT).on(REF_PRODUCT_DISCOUNT.DISCOUNT_ID.eq(DISCOUNT.DISCOUNT_ID))
                 .where(REF_PRODUCT_DISCOUNT.PRODUCT_ID.eq(productId), DISCOUNT.DELETED_DATETIME.isNull())
                 .fetchInto(Discount.class);
+    }
+
+    public List<ProductType> getProductTypes() {
+        return dslContext.selectFrom(PRODUCT_TYPE)
+                .fetchInto(ProductType.class);
     }
 }

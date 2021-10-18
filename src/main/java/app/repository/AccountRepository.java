@@ -16,9 +16,22 @@ import static app.generated.jooq.Tables.ACCOUNT;
 public class AccountRepository {
     private final DSLContext dslContext;
 
-    public Account getById(Long id) {
-        return dslContext.selectFrom(ACCOUNT)
-                .where(ACCOUNT.ID.eq(id))
+    public Account getById(Long accountId) {
+        return dslContext.select(
+                    ACCOUNT.ID,
+                    ACCOUNT.ACCOUNT_ID,
+                    ACCOUNT.DELETED_DATETIME,
+                    ACCOUNT.DELETED_DATETIME,
+                    ACCOUNT.EMAIL,
+                    ACCOUNT.LOGIN,
+                    ACCOUNT.PHONE,
+                    ACCOUNT.NAME,
+                    ACCOUNT.SURNAME,
+                    ACCOUNT.IS_ADMIN,
+                    ACCOUNT.IS_BLOCKED
+                )
+                .from(ACCOUNT)
+                .where(ACCOUNT.ID.eq(accountId))
                 .fetchOneInto(Account.class);
     }
 

@@ -11,8 +11,9 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static app.generated.jooq.Tables.*;
+import static app.generated.jooq.Tables.REF_COMBO_DISCOUNT;
 import static app.generated.jooq.Tables.DISCOUNT;
+import static app.generated.jooq.Tables.COMBO;
 
 @Repository
 @RequiredArgsConstructor
@@ -53,12 +54,11 @@ public class ComboRepository {
         return dslContext.nextval(Sequences.COMBO_COMBO_ID_SEQ);
     }
 
-    public List<Discount> getDiscountsByProductId(Long comboId) {
-        //TODO: refactor this ref table because productId and comboId can be equal
+    public List<Discount> getDiscountsByComboId(Long comboId) {
         return dslContext.select(DISCOUNT.fields())
-                .from(REF_PRODUCT_DISCOUNT)
-                .leftJoin(DISCOUNT).on(REF_PRODUCT_DISCOUNT.DISCOUNT_ID.eq(DISCOUNT.DISCOUNT_ID))
-                .where(REF_PRODUCT_DISCOUNT.PRODUCT_ID.eq(comboId), DISCOUNT.DELETED_DATETIME.isNull())
+                .from(REF_COMBO_DISCOUNT)
+                .leftJoin(DISCOUNT).on(REF_COMBO_DISCOUNT.DISCOUNT_ID.eq(DISCOUNT.DISCOUNT_ID))
+                .where(REF_COMBO_DISCOUNT.COMBO_ID.eq(comboId), DISCOUNT.DELETED_DATETIME.isNull())
                 .fetchInto(Discount.class);
     }
 }

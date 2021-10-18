@@ -5,8 +5,8 @@ import app.generated.jooq.tables.pojos.Discount;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
+
 import static app.generated.jooq.Tables.DISCOUNT;
-import static app.generated.jooq.Tables.REF_PRODUCT_DISCOUNT;
 
 import java.time.LocalDateTime;
 import java.util.List;
