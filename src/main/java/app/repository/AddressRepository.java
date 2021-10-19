@@ -21,6 +21,12 @@ public class AddressRepository {
                 .fetchInto(Address.class);
     }
 
+    public List<Address> getListByUser(Long accountId) {
+        return dslContext.selectFrom(ADDRESS)
+                .where(ADDRESS.ACCOUNT_ID.eq(accountId), ADDRESS.DELETED_DATETIME.isNull())
+                .fetchInto(Address.class);
+    }
+
     public Address getById(Long addressId) {
         return dslContext.selectFrom(ADDRESS)
                 .where(ADDRESS.ADDRESS_ID.eq(addressId), ADDRESS.DELETED_DATETIME.isNull())

@@ -1,6 +1,8 @@
 package app.services;
 
 import app.InvalidDataException;
+import app.UserContext;
+import app.entities.enums.Roles;
 import app.generated.jooq.tables.pojos.Account;
 import app.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import java.util.Map;
 public class AccountService {
     private final AccountRepository repository;
     private final PasswordEncoder passwordEncoder;
+    private final UserContext userContext;
 
     public Account getById(Long accountId) {
         return repository.getActualAccountById(accountId);
@@ -26,9 +29,6 @@ public class AccountService {
         validateCreateAccount(account);
         account.setAccountId(repository.getNextAccountId());
         account.setPassword(passwordEncoder.encode(account.getPassword()));
-        if (account.getIsAdmin() == null) {
-            account.setIsAdmin(false);
-        }
         if (account.getIsBlocked() == null) {
             account.setIsBlocked(false);
         }
@@ -38,9 +38,6 @@ public class AccountService {
     public void editAccount(Account account) {
         validateCreateAccount(account);
         Account oldAccount = repository.getActualAccountById(account.getAccountId());
-        if (account.getIsAdmin() == null) {
-            account.setIsAdmin(false);
-        }
         if (account.getIsBlocked() == null) {
             account.setIsBlocked(false);
         }
@@ -84,8 +81,32 @@ public class AccountService {
         }
     }
 
-
     public List<Account> getList() {
         return repository.getActualList();
     }
+
+    public Account getCurrentAccountInfo() {
+        return repository.getActualAccountById(userContext.getAccountId());
+    }
+
+    public void editCurrentAccount(Account account) {
+        if (!userContext.getAccountId().equals(account.getAccountId())) {
+            throw new InvalidDataException("Accounts mismatch!");
+        }
+        editAccount(account);
+    }
+
+    public void registerNewAccount(Account account) {
+        if (userContext.getAccountId() == null) {
+            account.setRoleId(Roles.ROLE_USER.getId().longValue());
+            createAccount(account);
+        } else {
+            throw new InvalidDataException("Exit from account and try again");
+        }
+    }
+
+    public void deleteCurrentAccount() {
+        deleteAccount(userContext.getAccountId());
+    }
+
 }

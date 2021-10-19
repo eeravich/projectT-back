@@ -2,6 +2,7 @@ package app.services;
 
 import app.InvalidDataException;
 import app.UserContext;
+import app.entities.enums.Roles;
 import app.generated.jooq.tables.pojos.Address;
 import app.repository.AddressRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,23 +23,54 @@ public class AddressService {
         return repository.getList();
     }
 
+    public List<Address> getListByUser() {
+        return repository.getListByUser(userContext.getAccountId());
+    }
+
     public Address getById(Long addressId) {
-        return repository.getById(addressId);
+
+        Address address = repository.getById(addressId);
+
+        if (Roles.ROLE_USER.getId().equals(userContext.getRoleId().intValue())) {
+            if (!address.getAccountId().equals(userContext.getAccountId())) {
+                throw new InvalidDataException("Access denied");
+            }
+        }
+        return address;
     }
 
     public void createAddress(Address address) {
+        if (Roles.ROLE_USER.getId().equals(userContext.getRoleId().intValue())) {
+            address.setAccountId(userContext.getAccountId());
+        }
+
         validateCreateAddress(address);
+
         address.setAddressId(repository.getNextAddressId());
         repository.createAddress(address);
     }
 
     public void deleteAddress(Long addressId) {
+        if (Roles.ROLE_USER.getId().equals(userContext.getRoleId().intValue())) {
+            Address addressToDelete = repository.getById(addressId);
+            if (!addressToDelete.getAccountId().equals(userContext.getAccountId())) {
+                throw new InvalidDataException("Address in not accessible by this account");
+            }
+        }
         repository.deleteAddress(addressId);
     }
 
     public void editAddress(Address address) {
+        boolean isUser = Roles.ROLE_USER.getId().equals(userContext.getRoleId().intValue());
+        if (isUser) {
+            address.setAccountId(userContext.getAccountId());
+        }
+
         validateCreateAddress(address);
         Address oldAddress = repository.getById(address.getAddressId());
+        if (isUser && !oldAddress.getAccountId().equals(address.getAccountId())) {
+            throw new InvalidDataException("Address in not accessible by this account");
+        }
         deleteAddress(oldAddress.getAddressId());
         repository.createAddress(address);
     }
@@ -56,8 +88,6 @@ public class AddressService {
         }
         if (address.getAccountId() == null) {
             errors.put("account", "Account can't be null");
-        } else if (!userContext.getAccountId().equals(address.getAccountId())) {
-            errors.put("account", "Account mismatch");
         }
 
         if (!errors.isEmpty()) {

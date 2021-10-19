@@ -17,4 +17,5 @@ public class UserContext {
     private String name;
     private String surname;
     private String phone;
+    private Long roleId;
 }

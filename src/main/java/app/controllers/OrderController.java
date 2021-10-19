@@ -1,9 +1,12 @@
 package app.controllers;
 
+import app.entities.enums.OrderStatuses;
+import app.entities.enums.Roles;
 import app.entities.pojos.OrderPojo;
 import app.generated.jooq.tables.pojos.Order;
 import app.services.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +19,7 @@ public class OrderController {
     private final OrderService service;
 
     @GetMapping("/list")
+    @Secured({Roles.Fields.ROLE_MANAGER, Roles.Fields.ROLE_ADMIN})
     public List<OrderPojo> getList() {
         return service.getList();
     }
@@ -41,5 +45,17 @@ public class OrderController {
     @Transactional
     public void deleteOrder(@PathVariable Long orderId) {
         service.deleteOrder(orderId);
+    }
+
+    @PutMapping("/{orderId}/cancel")
+    @Transactional
+    public void cancelOrder(@PathVariable Long orderId) {
+        service.changeStatus(orderId, OrderStatuses.CANCELED.getId());
+    }
+
+    @PutMapping("/{orderId}/submit")
+    @Transactional
+    public void submitOrder(@PathVariable Long orderId) {
+        service.changeStatus(orderId, OrderStatuses.SUBMITTED.getId());
     }
 }

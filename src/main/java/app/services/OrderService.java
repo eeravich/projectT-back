@@ -2,6 +2,8 @@ package app.services;
 
 import app.InvalidDataException;
 import app.UserContext;
+import app.entities.enums.OrderStatuses;
+import app.entities.enums.Roles;
 import app.entities.pojos.OrderPojo;
 import app.generated.jooq.tables.pojos.Order;
 import app.repository.AccountRepository;
@@ -31,18 +33,26 @@ public class OrderService {
 
     public OrderPojo getById(Long orderId) {
         OrderPojo orderPojo = repository.getById(orderId);
-        orderPojo.setAccount(accountRepository.getById(orderPojo.getAccountId()));
-        orderPojo.setAddress(addressRepository.getById(orderPojo.getAddressId()));
 
+        validateAccountMatch(orderPojo.getAccountId());
+
+        orderPojo.setAccount(accountRepository.getById(orderPojo.getAccountId()));
+
+        if (orderPojo.getAddressId() != null) {
+            orderPojo.setAddress(addressRepository.getById(orderPojo.getAddressId()));
+        }
         if (orderPojo.getDiscountId() != null) {
             orderPojo.setDiscount(discountRepository.getById(orderPojo.getDiscountId()));
         }
+
         return orderPojo;
     }
 
     public void createOrder(Order order) {
         validateCreateOrder(order);
+        order.setStatusId(OrderStatuses.NEW.getId().longValue());
         order.setOrderId(repository.getNextOrderId());
+        order.setAccountId(userContext.getAccountId());
         repository.createOrder(order);
     }
 
@@ -52,6 +62,8 @@ public class OrderService {
 
     public void editOrder(Order order) {
         validateCreateOrder(order);
+        validateAccountMatch(order.getAccountId());
+
         OrderPojo oldOrder = repository.getById(order.getOrderId());
         deleteOrder(oldOrder.getOrderId());
         repository.createOrder(order);
@@ -59,11 +71,6 @@ public class OrderService {
 
     private void validateCreateOrder(Order order) {
         Map<String, String> errors = new HashMap<>();
-        if (order.getAccountId() == null) {
-            errors.put("account", "Account can't be null");
-        } else if (!userContext.getAccountId().equals(order.getAccountId())) {
-            errors.put("account", "Accounts mismatch");
-        }
         if (StringUtils.isBlank(order.getPhone())) {
             errors.put("phone", "Phone can't be null");
         }
@@ -75,5 +82,21 @@ public class OrderService {
         }
 
         throw new InvalidDataException(errors);
+    }
+
+    public void changeStatus(Long orderId, Integer statusId) {
+        OrderPojo orderPojo = repository.getById(orderId);
+
+        validateAccountMatch(orderPojo.getAccountId());
+
+        orderPojo.setStatusId(statusId.longValue());
+        deleteOrder(orderPojo.getOrderId());
+        repository.createOrder(orderPojo);
+    }
+
+    private void validateAccountMatch(Long accountId) {
+        if (Roles.ROLE_USER.getId().equals(userContext.getRoleId().intValue()) && !accountId.equals(userContext.getRoleId())) {
+            throw new InvalidDataException("Order isn't accessible for this account");
+        }
     }
 }

@@ -1,5 +1,6 @@
 package app;
 
+import app.entities.pojos.AccountPojo;
 import app.generated.jooq.tables.pojos.Account;
 import app.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,7 @@ public class UserContextFilter extends OncePerRequestFilter {
             userContext.setName(account.getName());
             userContext.setSurname(account.getSurname());
             userContext.setPhone(account.getPhone());
+            userContext.setRoleId(account.getRoleId());
         }
 
         filterChain.doFilter(request, response);

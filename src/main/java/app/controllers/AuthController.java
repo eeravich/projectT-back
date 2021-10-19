@@ -5,6 +5,7 @@ import app.generated.jooq.tables.pojos.Account;
 import app.services.AccountService;
 import app.services.AuthenticationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +22,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
+    @Transactional
     public void register(@RequestBody Account account) {
-        accountService.createAccount(account);
+        accountService.registerNewAccount(account);
     }
 }

@@ -1,8 +1,10 @@
 package app.controllers;
 
+import app.entities.enums.Roles;
 import app.generated.jooq.tables.pojos.Address;
 import app.services.AddressService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +17,13 @@ public class AddressController {
     private final AddressService service;
 
     @GetMapping("/list")
+    @Secured({Roles.Fields.ROLE_MANAGER, Roles.Fields.ROLE_ADMIN})
     public List<Address> getList() {
+        return service.getList();
+    }
+
+    @GetMapping("/listByUser")
+    public List<Address> getListByUser() {
         return service.getList();
     }
 
