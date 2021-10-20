@@ -26,6 +26,8 @@ public class DataSourceConf {
     public DataSource createDataSource() {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl(dbUrl);
+        config.setUsername(username);
+        config.setPassword(password);
         config.setAutoCommit(true);
         config.setMaximumPoolSize(20);
         config.setMinimumIdle(10);
