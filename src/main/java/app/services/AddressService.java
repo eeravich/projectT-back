@@ -75,6 +75,7 @@ public class AddressService {
         repository.createAddress(address);
     }
 
+    //TODO: доработать адреса и их валидацию (KLADR (https://fias.nalog.ru/Updates), api yandex map)
     private void validateCreateAddress(Address address) {
         Map<String, String> errors = new HashMap<>();
         if (StringUtils.isBlank(address.getStreet())) {
