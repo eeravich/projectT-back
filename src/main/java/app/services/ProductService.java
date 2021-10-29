@@ -5,20 +5,19 @@ import app.entities.pojos.ProductPojo;
 import app.generated.jooq.tables.pojos.Product;
 import app.generated.jooq.tables.pojos.RefProductComponent;
 import app.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.jooq.tools.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class ProductService {
-    final ProductRepository repository;
-
-    public ProductService(ProductRepository repository) {
-        this.repository = repository;
-    }
+    private final ProductRepository repository;
 
     public List<ProductPojo> getList() {
         List<ProductPojo> list = repository.getList();
@@ -62,12 +61,18 @@ public class ProductService {
         }
         if (product.getPrice() == null) {
             errors.put("price", "Price can't be null");
+        } else if (product.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
+            errors.put("price", "Price can't be lower than zero");
         }
         if (product.getPortion() == null) {
             errors.put("portion", "Portion can't be null");
+        } else if (product.getPortion() <= 0) {
+            errors.put("portion", "Portion can't be less than 1");
         }
         if (product.getWeight() == null) {
             errors.put("weight", "Weight can't be null");
+        } else if (product.getWeight() <= 0) {
+            errors.put("weight", "Weight can't be less than 1");
         }
         if (product.getProductTypeId() == null) {
             errors.put("productType", "Product type can't be null");
@@ -78,14 +83,14 @@ public class ProductService {
         }
     }
 
-    public void addComponent(Long productId, Long componentId) {
+    private void addComponent(Long productId, Long componentId) {
         RefProductComponent ref = new RefProductComponent();
         ref.setComponentId(componentId);
         ref.setProductId(productId);
         repository.addComponent(ref);
     }
 
-    public void deleteComponent(Long productId, Long componentId) {
+    private void deleteComponent(Long productId, Long componentId) {
         repository.deleteComponent(productId, componentId);
     }
 

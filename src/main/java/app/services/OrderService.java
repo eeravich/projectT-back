@@ -72,6 +72,7 @@ public class OrderService {
     private void validateCreateOrder(Order order) {
         Map<String, String> errors = new HashMap<>();
         if (StringUtils.isBlank(order.getPhone())) {
+            //TODO: check phone with ?regex?
             errors.put("phone", "Phone can't be null");
         }
         if (StringUtils.isBlank(order.getName())) {

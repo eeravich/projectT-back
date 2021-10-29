@@ -51,7 +51,10 @@ public class DiscountService {
         }
         if (discount.getPercent() == null) {
             errors.put("percent", "Percent can't be null");
+        } else if (discount.getPercent() < 0 || discount.getPercent() > 100) {
+            errors.put("percent", "Percent must be in range between 0 and 100");
         }
+
         if (discount.getStartDatetime() != null && discount.getEndDatetime() != null) {
             if (discount.getStartDatetime().isAfter(discount.getEndDatetime())) {
                 errors.put("startDate", "Start date can't be after end date");

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.jooq.tools.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +55,8 @@ public class ComboService {
         }
         if (combo.getPrice() == null) {
             errors.put("price", "Price can't be null");
+        } else if (combo.getPrice().compareTo(BigDecimal.ZERO) < 0) {
+            errors.put("price", "Price can't be less than zero");
         }
 
         if (!errors.isEmpty()) {

@@ -324,4 +324,83 @@ class AddressServiceTest {
 
         Mockito.verify(addressRepository, Mockito.times(0)).deleteAddress(1L);
     }
+
+    @Test
+    void editAddressTest_UserEditForeignAddress() {
+        Address address = new Address(
+                1L,
+                1L,
+                LocalDateTime.now(),
+                null,
+                "Baker street",
+                "102",
+                "221B",
+                null,
+                null,
+                null,
+                5L
+        );
+        Mockito.when(userContext.getRoleId()).thenReturn(Roles.ROLE_USER.getId().longValue());
+        Mockito.when(addressRepository.getById(1L)).thenReturn(address);
+        Mockito.when(userContext.getAccountId()).thenReturn(2L);
+
+        InvalidDataException ex = assertThrows(InvalidDataException.class, () -> addressService.editAddress(address));
+        assertNotNull(ex);
+        Mockito.verify(addressRepository, Mockito.times(0)).deleteAddress(1L);
+        Mockito.verify(addressRepository, Mockito.times(0)).createAddress(address);
+    }
+
+    @Test
+    void editAddressTest_UserEditItsAddress() {
+        Address address = new Address(
+                1L,
+                1L,
+                LocalDateTime.now(),
+                null,
+                "Baker street",
+                "102",
+                "221B",
+                null,
+                null,
+                null,
+                5L
+        );
+        Mockito.when(userContext.getRoleId()).thenReturn(Roles.ROLE_USER.getId().longValue());
+        Mockito.when(addressRepository.getById(1L)).thenReturn(address);
+        Mockito.when(userContext.getAccountId()).thenReturn(5L);
+        Mockito.doNothing().when(addressRepository).deleteAddress(Mockito.anyLong());
+        Mockito.doNothing().when(addressRepository).createAddress(address);
+
+        addressService.editAddress(address);
+
+        Mockito.verify(addressRepository, Mockito.times(1)).deleteAddress(1L);
+        Mockito.verify(addressRepository, Mockito.times(1)).createAddress(address);
+    }
+
+    @Test
+    void editAddressTest_ManagerOrAdminEditAddress() {
+        Address address = new Address(
+                1L,
+                1L,
+                LocalDateTime.now(),
+                null,
+                "Baker street",
+                "102",
+                "221B",
+                null,
+                null,
+                null,
+                5L
+        );
+        Mockito.when(userContext.getRoleId()).thenReturn(Roles.ROLE_MANAGER.getId().longValue());
+        Mockito.when(addressRepository.getById(1L)).thenReturn(address);
+        Mockito.when(userContext.getAccountId()).thenReturn(2L);
+        Mockito.doNothing().when(addressRepository).deleteAddress(Mockito.anyLong());
+        Mockito.doNothing().when(addressRepository).createAddress(address);
+
+        addressService.editAddress(address);
+
+        Mockito.verify(addressRepository, Mockito.times(1)).deleteAddress(1L);
+        Mockito.verify(addressRepository, Mockito.times(1)).createAddress(address);
+    }
 }
