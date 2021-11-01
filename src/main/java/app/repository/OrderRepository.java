@@ -11,8 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static app.generated.jooq.Tables.ORDER;
-import static app.generated.jooq.Tables.ORDER_STATUS;
+import static app.generated.jooq.Tables.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -70,5 +69,21 @@ public class OrderRepository {
     public List<OrderStatus> getOrderStatuses() {
         return dslContext.selectFrom(ORDER_STATUS)
                 .fetchInto(OrderStatus.class);
+    }
+
+    public List<Long> getProductIdsByOrderId(Long orderId) {
+        return dslContext.select(REF_ORDER_PRODUCT.PRODUCT_ID)
+                .from(ORDER)
+                .join(REF_ORDER_PRODUCT).on(ORDER.ORDER_ID.eq(REF_ORDER_PRODUCT.ORDER_ID))
+                .where(ORDER.ORDER_ID.eq(orderId), ORDER.DELETED_DATETIME.isNull())
+                .fetchInto(Long.class);
+    }
+
+    public List<Long> getComboIdsByOrderId(Long orderId) {
+        return dslContext.select(REF_ORDER_PRODUCT.COMBO_ID)
+                .from(ORDER)
+                .join(REF_ORDER_PRODUCT).on(ORDER.ORDER_ID.eq(REF_ORDER_PRODUCT.ORDER_ID))
+                .where(ORDER.ORDER_ID.eq(orderId), ORDER.DELETED_DATETIME.isNull())
+                .fetchInto(Long.class);
     }
 }

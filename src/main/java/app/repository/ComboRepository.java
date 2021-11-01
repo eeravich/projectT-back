@@ -61,4 +61,11 @@ public class ComboRepository {
                 .where(REF_COMBO_DISCOUNT.COMBO_ID.eq(comboId), DISCOUNT.DELETED_DATETIME.isNull())
                 .fetchInto(Discount.class);
     }
+
+    public List<Combo> getListByComboIds(List<Long> comboIdList) {
+        return dslContext.select(COMBO.fields())
+                .from(COMBO)
+                .where(COMBO.COMBO_ID.in(comboIdList), COMBO.DELETED_DATETIME.isNull())
+                .fetchInto(Combo.class);
+    }
 }

@@ -5,11 +5,15 @@ import app.UserContext;
 import app.entities.enums.OrderStatuses;
 import app.entities.enums.Roles;
 import app.entities.pojos.OrderPojo;
+import app.generated.jooq.tables.pojos.Combo;
 import app.generated.jooq.tables.pojos.Order;
+import app.generated.jooq.tables.pojos.Product;
 import app.repository.AccountRepository;
 import app.repository.AddressRepository;
 import app.repository.DiscountRepository;
 import app.repository.OrderRepository;
+import app.repository.ProductRepository;
+import app.repository.ComboRepository;
 import lombok.RequiredArgsConstructor;
 import org.jooq.tools.StringUtils;
 import org.springframework.stereotype.Service;
@@ -25,6 +29,8 @@ public class OrderService {
     private final DiscountRepository discountRepository;
     private final AddressRepository addressRepository;
     private final AccountRepository accountRepository;
+    private final ProductRepository productRepository;
+    private final ComboRepository comboRepository;
     private final UserContext userContext;
 
     public List<OrderPojo> getList() {
@@ -36,7 +42,14 @@ public class OrderService {
 
         validateAccountMatch(orderPojo.getAccountId());
 
-        orderPojo.setAccount(accountRepository.getById(orderPojo.getAccountId()));
+        orderPojo.setAccount(accountRepository.getActualAccountById(orderPojo.getAccountId()));
+
+        List<Long> productIds = repository.getProductIdsByOrderId(orderId);
+        List<Long> comboIds = repository.getComboIdsByOrderId(orderId);
+        List<Product> productList = productRepository.getListByProductIds(productIds);
+        List<Combo> comboList = comboRepository.getListByComboIds(comboIds);
+        orderPojo.setProductList(productList);
+        orderPojo.setComboList(comboList);
 
         if (orderPojo.getAddressId() != null) {
             orderPojo.setAddress(addressRepository.getById(orderPojo.getAddressId()));
@@ -81,8 +94,9 @@ public class OrderService {
         if (order.getAddonsCount() == null) {
             errors.put("addonsCount", "Addons count can't be null");
         }
-
-        throw new InvalidDataException(errors);
+        if (!errors.isEmpty()) {
+            throw new InvalidDataException(errors);
+        }
     }
 
     public void changeStatus(Long orderId, Integer statusId) {
@@ -96,7 +110,7 @@ public class OrderService {
     }
 
     private void validateAccountMatch(Long accountId) {
-        if (Roles.ROLE_USER.getId().equals(userContext.getRoleId().intValue()) && !accountId.equals(userContext.getRoleId())) {
+        if (Roles.ROLE_USER.getId().equals(userContext.getRoleId().intValue()) && !accountId.equals(userContext.getAccountId())) {
             throw new InvalidDataException("Order isn't accessible for this account");
         }
     }

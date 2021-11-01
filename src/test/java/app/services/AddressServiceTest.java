@@ -8,13 +8,14 @@ import app.repository.AddressRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+@SpringBootTest
 class AddressServiceTest {
 
     @MockBean
@@ -340,8 +341,10 @@ class AddressServiceTest {
                 null,
                 5L
         );
+        Address oldAddress = new Address(address);
+
         Mockito.when(userContext.getRoleId()).thenReturn(Roles.ROLE_USER.getId().longValue());
-        Mockito.when(addressRepository.getById(1L)).thenReturn(address);
+        Mockito.when(addressRepository.getById(1L)).thenReturn(oldAddress);
         Mockito.when(userContext.getAccountId()).thenReturn(2L);
 
         InvalidDataException ex = assertThrows(InvalidDataException.class, () -> addressService.editAddress(address));

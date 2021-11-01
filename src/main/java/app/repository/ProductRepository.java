@@ -95,4 +95,11 @@ public class ProductRepository {
         return dslContext.selectFrom(PRODUCT_TYPE)
                 .fetchInto(ProductType.class);
     }
+
+    public List<Product> getListByProductIds(List<Long> productIdList) {
+        return dslContext.select(PRODUCT.fields())
+                .from(PRODUCT)
+                .where(PRODUCT.PRODUCT_ID.in(productIdList), PRODUCT.DELETED_DATETIME.isNull())
+                .fetchInto(Product.class);
+    }
 }

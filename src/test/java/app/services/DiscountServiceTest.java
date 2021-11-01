@@ -6,12 +6,14 @@ import app.repository.DiscountRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 class DiscountServiceTest {
 
     @MockBean
@@ -194,7 +196,7 @@ class DiscountServiceTest {
         Mockito.doNothing().when(discountRepository).deleteDiscount(2L);
         Mockito.doNothing().when(discountRepository).createDiscount(Mockito.any(Discount.class));
 
-        discountService.createNewDiscount(discount);
+        discountService.editDiscount(discount);
 
         Mockito.verify(discountRepository, Mockito.times(1)).deleteDiscount(2L);
         Mockito.verify(discountRepository, Mockito.times(1)).createDiscount(Mockito.any(Discount.class));

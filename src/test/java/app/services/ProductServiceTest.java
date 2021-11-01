@@ -7,8 +7,8 @@ import app.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.core.parameters.P;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -17,6 +17,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 class ProductServiceTest {
 
     @MockBean
@@ -33,14 +34,16 @@ class ProductServiceTest {
         list.add(new ProductPojo());
 
         Mockito.when(productRepository.getList()).thenReturn(list);
-        Mockito.doNothing().when(productRepository).getProductComponents(Mockito.anyLong());
-        Mockito.doNothing().when(productRepository).getDiscountsByProductId(Mockito.anyLong());
+        Mockito.when(productRepository.getProductComponents(Mockito.anyLong())).thenReturn(new ArrayList<>());
+        Mockito.when(productRepository.getDiscountsByProductId(Mockito.anyLong())).thenReturn(new ArrayList<>());
 
         List<ProductPojo> productList = productService.getList();
 
         assertEquals(list.size(), productList.size());
-        Mockito.verify(productRepository, Mockito.times(list.size())).getProductComponents(Mockito.anyLong());
-        Mockito.verify(productRepository, Mockito.times(list.size())).getDiscountsByProductId(Mockito.anyLong());
+        for (ProductPojo product : productList) {
+            assertNotNull(product.getDiscounts());
+            assertNotNull(product.getComponents());
+        }
     }
 
     @Test
@@ -48,14 +51,14 @@ class ProductServiceTest {
         ProductPojo productPojo = new ProductPojo();
 
         Mockito.when(productRepository.getById(Mockito.anyLong())).thenReturn(productPojo);
-        Mockito.doNothing().when(productRepository).getProductComponents(Mockito.anyLong());
-        Mockito.doNothing().when(productRepository).getDiscountsByProductId(Mockito.anyLong());
+        Mockito.when(productRepository.getProductComponents(Mockito.anyLong())).thenReturn(new ArrayList<>());
+        Mockito.when(productRepository.getDiscountsByProductId(Mockito.anyLong())).thenReturn(new ArrayList<>());
 
         ProductPojo productById = productService.getById(1L);
 
         assertEquals(productById, productPojo);
-        Mockito.verify(productRepository, Mockito.times(1)).getProductComponents(Mockito.anyLong());
-        Mockito.verify(productRepository, Mockito.times(1)).getDiscountsByProductId(Mockito.anyLong());
+        assertNotNull(productById.getComponents());
+        assertNotNull(productById.getDiscounts());
     }
 
     @Test
@@ -94,7 +97,6 @@ class ProductServiceTest {
         );
 
         Mockito.when(productRepository.getNextProductId()).thenReturn(2L);
-        Mockito.doNothing().when(productRepository).createProduct(product);
 
         InvalidDataException ex = assertThrows(InvalidDataException.class, () -> productService.createProduct(product));
         assertNotNull(ex);
@@ -104,8 +106,6 @@ class ProductServiceTest {
         assertTrue(ex.getErrors().containsKey("portion"));
         assertTrue(ex.getErrors().containsKey("weight"));
         assertFalse(ex.getErrors().containsKey("productType"));
-
-        Mockito.verify(productRepository, Mockito.times(0)).createProduct(product);
     }
 
     @Test
@@ -218,6 +218,6 @@ class ProductServiceTest {
 
         productService.deleteComponents(2L, componentsIds);
 
-        Mockito.verify(productRepository, Mockito.times(componentsIds.size())).deleteComponent(2L, Mockito.anyLong());
+        Mockito.verify(productRepository, Mockito.times(componentsIds.size())).deleteComponent(Mockito.anyLong(), Mockito.anyLong());
     }
 }
