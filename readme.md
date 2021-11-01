@@ -5,12 +5,21 @@
 
 ## Installing / Getting started
 
-Add these VM options params to run config to specify database connection
+Modify these options in application.properties and pom.xml to specify database connection
+```properties
+spring.datasource.url={db_url}
+spring.datasource.username={db_login}
+spring.datasource.password={db_pass}
 ```
--Dspring.datasource.url={url}
--Dspring.datasource.username={db_login}
--Dspring.datasource.password={db_pass}
+```xml
+<jdbc>
+    <driver>org.postgresql.Driver</driver>
+    <url>{db_url}</url>
+    <username>{db_login}</username>
+    <password>{db_pass}</password>
+</jdbc>
 ```
+
 To generate JOOQ data with maven run 
 ```
 jooq-codegen:generate
