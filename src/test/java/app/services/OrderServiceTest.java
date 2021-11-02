@@ -201,6 +201,63 @@ class OrderServiceTest {
     }
 
     @Test
+    void createOrderTest_WithInvalidPhone() {
+        Order order1 = new Order(
+                1L,
+                1L,
+                LocalDateTime.now(),
+                null,
+                null,
+                "+7903912030",
+                "fwefwefwe",
+                false,
+                null,
+                null,
+                10,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        Order order2 = new Order(
+                1L,
+                1L,
+                LocalDateTime.now(),
+                null,
+                null,
+                "+7rfewrwer",
+                "rewrfwewe",
+                false,
+                null,
+                null,
+                10,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        InvalidDataException ex = assertThrows(InvalidDataException.class, () -> orderService.createOrder(order1));
+
+        assertNotNull(ex);
+        assertEquals(1, ex.getErrors().size());
+        assertTrue(ex.getErrors().containsKey("phone"));
+        assertFalse(ex.getErrors().containsKey("name"));
+        assertFalse(ex.getErrors().containsKey("addonsCount"));
+
+        InvalidDataException ex2 = assertThrows(InvalidDataException.class, () -> orderService.createOrder(order2));
+
+        assertNotNull(ex2);
+        assertEquals(1, ex2.getErrors().size());
+        assertTrue(ex2.getErrors().containsKey("phone"));
+        assertFalse(ex2.getErrors().containsKey("name"));
+        assertFalse(ex2.getErrors().containsKey("addonsCount"));
+    }
+
+    @Test
     void createOrderTest_WithValidFields() {
         Order order = new Order(
                 1L,
@@ -208,7 +265,7 @@ class OrderServiceTest {
                 LocalDateTime.now(),
                 null,
                 1L,
-                "+90391203",
+                "+79039120303",
                 "Andrey Golubev",
                 false,
                 null,

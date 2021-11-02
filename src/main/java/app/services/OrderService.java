@@ -85,8 +85,11 @@ public class OrderService {
     private void validateCreateOrder(Order order) {
         Map<String, String> errors = new HashMap<>();
         if (StringUtils.isBlank(order.getPhone())) {
-            //TODO: check phone with ?regex?
             errors.put("phone", "Phone can't be null");
+        } else {
+            if (!order.getPhone().matches("^\\+7[0-9]{10}$")) {
+                errors.put("phone", "Invalid phone number");
+            }
         }
         if (StringUtils.isBlank(order.getName())) {
             errors.put("name", "Name can't be null");
