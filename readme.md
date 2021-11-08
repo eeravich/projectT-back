@@ -1,5 +1,5 @@
 # ProjectT
-> link to [front](https://github.com/marinerbob/s-project)
+> link to [front](https://github.com/marinerbob/sush)
 
 Базовая серверная часть для портала по заказу суши
 
@@ -24,3 +24,16 @@ To generate JOOQ data with maven run
 ```
 jooq-codegen:generate
 ```
+
+
+## Database
+Postgresql 
+
+<details>
+<summary>Database schema</summary>
+    
+![db_schema](db_schema.png "Database schema")
+</details>
+
+Use [db_init_script](db_init_testData.sql) to initialize database schema and tables.
+If you want you can uncomment inserts blocks which contains test data.
