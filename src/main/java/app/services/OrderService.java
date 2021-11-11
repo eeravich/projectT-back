@@ -2,6 +2,7 @@ package app.services;
 
 import app.InvalidDataException;
 import app.UserContext;
+import app.Utils;
 import app.entities.enums.OrderStatuses;
 import app.entities.enums.Roles;
 import app.entities.pojos.OrderPojo;
@@ -87,7 +88,7 @@ public class OrderService {
         if (StringUtils.isBlank(order.getPhone())) {
             errors.put("phone", "Phone can't be null");
         } else {
-            if (!order.getPhone().matches("^\\+7[0-9]{10}$")) {
+            if (!Utils.checkPhoneNumber(order.getPhone())) {
                 errors.put("phone", "Invalid phone number");
             }
         }

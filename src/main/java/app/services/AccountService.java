@@ -2,6 +2,7 @@ package app.services;
 
 import app.InvalidDataException;
 import app.UserContext;
+import app.Utils;
 import app.entities.enums.Roles;
 import app.generated.jooq.tables.pojos.Account;
 import app.repository.AccountRepository;
@@ -63,13 +64,13 @@ public class AccountService {
             errors.put("email", "Email can't be null");
         } else if (repository.isExistByEmail(account.getEmail())) {
             errors.put("email", "User with this email already exist");
-            //TODO: email check
         }
         if (StringUtils.isBlank(account.getPhone())) {
             errors.put("phone", "Phone can't be null");
+        } else if (!Utils.checkPhoneNumber(account.getPhone())) {
+            errors.put("phone", "Invalid phone number");
         } else if (repository.isExistByPhone(account.getPhone())) {
             errors.put("phone", "User with this phone already exist");
-            //TODO: phone check
         }
         if (StringUtils.isBlank(account.getName())) {
             errors.put("name", "Name can't be null");
