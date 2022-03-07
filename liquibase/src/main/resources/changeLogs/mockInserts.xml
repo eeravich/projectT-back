@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd"
+>
+    <changeSet id="mockData-01" author="bullov">
+        <preConditions>
+            <tableExists schemaName="project_T" tableName="role"/>
+            <tableIsEmpty schemaName="project_T" tableName="role"/>
+        </preConditions>
+        <sql>
+            INSERT INTO projectT.role (name, description) VALUES ('USER', 'Обычный пользователь');
+            INSERT INTO projectT.role (name, description) VALUES ('MANAGER', 'Владелец портала / менеджер точки');
+            INSERT INTO projectT.role (name, description) VALUES ('ADMIN', 'Full admin');
+        </sql>
+    </changeSet>
+
+    <changeSet id="mockData-02" author="bullov">
+        <preConditions>
+            <tableExists schemaName="project_T" tableName="product_type"/>
+            <tableIsEmpty schemaName="project_T" tableName="product_type"/>
+        </preConditions>
+        <sql>
+            INSERT INTO projectT.product_type (name) VALUES ('Пицца');
+            INSERT INTO projectT.product_type (name) VALUES ('WOK');
+            INSERT INTO projectT.product_type (name) VALUES ('Роллы');
+            INSERT INTO projectT.product_type (name) VALUES ('Суши');
+            INSERT INTO projectT.product_type (name) VALUES ('Салаты');
+            INSERT INTO projectT.product_type (name) VALUES ('Супы');
+            INSERT INTO projectT.product_type (name) VALUES ('Напитки');
+        </sql>
+    </changeSet>
+
+    <changeSet id="mockData-03" author="bullov">
+        <preConditions>
+            <tableExists schemaName="project_T" tableName="order_status"/>
+            <tableIsEmpty schemaName="project_T" tableName="order_status"/>
+        </preConditions>
+        <sql>
+            INSERT INTO projectT.order_status (name) VALUES ('Новый');
+            INSERT INTO projectT.order_status (name) VALUES ('Подтвержден');
+            INSERT INTO projectT.order_status (name) VALUES ('Готовится');
+            INSERT INTO projectT.order_status (name) VALUES ('Готов');
+            INSERT INTO projectT.order_status (name) VALUES ('Доставка');
+            INSERT INTO projectT.order_status (name) VALUES ('Завершен');
+            INSERT INTO projectT.order_status (name) VALUES ('Отменен');
+        </sql>
+    </changeSet>
+
+    <changeSet id="mockData-04" author="bullov">
+        <preConditions>
+            <tableExists schemaName="project_T" tableName="component"/>
+            <tableIsEmpty schemaName="project_T" tableName="component"/>
+        </preConditions>
+        <sql>
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Рис', 'обычный рис');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Лосось', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Сыр «Филадельфия»', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Масаго', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Огурец', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Авокадо', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Угорь', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Кунжут', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Креветки', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Лист нори', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Сыр моцарелла', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Сыр пармезан', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Томаты', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Маслины', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Омлет', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Сладкий перец', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Красный лук', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Чеснок', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Томатный соус', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Сыр чеддер', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Перец халапеньо', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Итальянские травы', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Бекон', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Цепленок', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Ветчина', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Шампиньоны', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Брынза', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Соус песто', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Пепперони', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Ананас', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Соленные огурцы', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Креветка тигровая', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Краб', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Крабовые палочки', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Салат айсберг', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Лапша удон', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Капуста', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Морковь', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Томаты черри', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Кинза', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Говядина', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Фасоль стручковая', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Перец чили', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Соус терияки', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Соевый соус', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Водоросли чука', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Лимон', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Ореховый соус', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Сливки', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Сыр тофу', '');
+            INSERT INTO projectT.component (created_datetime, deleted_datetime, name, description) VALUES (now(), null, 'Яйцо', '');
+        </sql>
+    </changeSet>
+
+    <changeSet id="mockData-05" author="bullov">
+        <preConditions>
+            <tableExists schemaName="project_T" tableName="product"/>
+            <tableIsEmpty schemaName="project_T" tableName="product"/>
+        </preConditions>
+        <sql>
+            INSERT INTO projectT.product (created_datetime, deleted_datetime, name, description, price, portion, weight, product_type_id, attachment_id)
+            VALUES (now(), null, 'Ролл филадельфия', 'Ролл филадельфия придуман знаменитым японским ресторатором Якото Узумаки в 1968 году в Филадельфии, отличается тонким, нежным вкусом лосося после первого укуса', 259, 6, 220, 3, null);
+            INSERT INTO projectT.product (created_datetime, deleted_datetime, name, description, price, portion, weight, product_type_id, attachment_id)
+            VALUES (now(), null, 'Ролл филадельфия в масаго', 'Как филадельфия только в масаго', 279, 6, 230, 3, null);
+            INSERT INTO projectT.product (created_datetime, deleted_datetime, name, description, price, portion, weight, product_type_id, attachment_id)
+            VALUES (now(), null, 'Ролл с тигровой креветкой и лососем', 'Креветка сделанная специально из тигра идеально подходит к данному блюду', 359, 6, 330, 3, null);
+            INSERT INTO projectT.product (created_datetime, deleted_datetime, name, description, price, portion, weight, product_type_id, attachment_id)
+            VALUES (now(), null, 'Wok Том Ям с креветкой', 'Вок с креветкой из прудов Александра Македонского', 300, 1, 320, 2, null);
+            INSERT INTO projectT.product (created_datetime, deleted_datetime, name, description, price, portion, weight, product_type_id, attachment_id)
+            VALUES (now(), null, 'Wok сальса', 'Острый как Борис Бритва', 299, 1, 280, 2, null);
+            INSERT INTO projectT.product (created_datetime, deleted_datetime, name, description, price, portion, weight, product_type_id, attachment_id)
+            VALUES (now(), null, 'Wok с говядиной', 'Говядинас лучших лугов Казахстана', 325, 1, 330, 2, null);
+            INSERT INTO projectT.product (created_datetime, deleted_datetime, name, description, price, portion, weight, product_type_id, attachment_id)
+            VALUES (now(), null, 'Суши лосось', 'Рис с лососем из тайги', 89, 1, 32, 4, null);
+            INSERT INTO projectT.product (created_datetime, deleted_datetime, name, description, price, portion, weight, product_type_id, attachment_id)
+            VALUES (now(), null, 'Суши угорь', 'Рис с угрем Игорем', 109, 1, 33, 4, null);
+            INSERT INTO projectT.product (created_datetime, deleted_datetime, name, description, price, portion, weight, product_type_id, attachment_id)
+            VALUES (now(), null, 'Суши креветка', 'Рис с креветкой из Черного моря', 99, 1, 33, 0, null);
+            INSERT INTO projectT.product (created_datetime, deleted_datetime, name, description, price, portion, weight, product_type_id, attachment_id)
+            VALUES (now(), null, 'Чука салат', 'Салат с зелеными водорослями', 209, 1, 152, 5, null);
+            INSERT INTO projectT.product (created_datetime, deleted_datetime, name, description, price, portion, weight, product_type_id, attachment_id)
+            VALUES (now(), null, 'Цезарь с курицей', 'Салат придуманный римским полководцем в древнем риме', 259, 1, 223, 5, null);
+            INSERT INTO projectT.product (created_datetime, deleted_datetime, name, description, price, portion, weight, product_type_id, attachment_id)
+            VALUES (now(), null, 'Цезарь с креветкой', 'Модификация оригинального блюда с использованием морской креветки', 278, 1, 228, 5, null);
+            INSERT INTO projectT.product (created_datetime, deleted_datetime, name, description, price, portion, weight, product_type_id, attachment_id)
+            VALUES (now(), null, 'Том ям с цыпленком', 'Суп с маленькой курицей', 299, 1, 360, 6, null);
+            INSERT INTO projectT.product (created_datetime, deleted_datetime, name, description, price, portion, weight, product_type_id, attachment_id)
+            VALUES (now(), null, 'Том ям с креветками', 'Как с курицей, только с креветками', 399, 1, 360, 6, null);
+            INSERT INTO projectT.product (created_datetime, deleted_datetime, name, description, price, portion, weight, product_type_id, attachment_id)
+            VALUES (now(), null, 'Мисо', 'Суп мисо', 104, 1, 223, 6, null);
+            INSERT INTO projectT.product (created_datetime, deleted_datetime, name, description, price, portion, weight, product_type_id, attachment_id)
+            VALUES (now(), null, 'Кока-кола 0.5л', 'Как Клава только Кола', 99, 1, 500, 7, null);
+            INSERT INTO projectT.product (created_datetime, deleted_datetime, name, description, price, portion, weight, product_type_id, attachment_id)
+            VALUES (now(), null, 'Пепси 0.5л', 'Сам Месси пил когда-то из этой бутылки', 79, 1, 500, 7, null);
+            INSERT INTO projectT.product (created_datetime, deleted_datetime, name, description, price, portion, weight, product_type_id, attachment_id)
+            VALUES (now(), null, 'Спрайт 0.5л', 'Газировка прозрачная как стекло', 99, 1, 500, 7, null);
+            INSERT INTO projectT.product (created_datetime, deleted_datetime, name, description, price, portion, weight, product_type_id, attachment_id)
+            VALUES (now(), null, 'Сок свежевыжатый в ассортимете 0.3л', 'Яблочный, Ананасовый, Апельсиновый из свежевыжатых фруктов', 129, 1, 300, 7, null);
+            INSERT INTO projectT.product (created_datetime, deleted_datetime, name, description, price, portion, weight, product_type_id, attachment_id)
+            VALUES (now(), null, 'Маргарита', 'Помидорки и сыр', 219, 1, 320, 1, null);
+            INSERT INTO projectT.product (created_datetime, deleted_datetime, name, description, price, portion, weight, product_type_id, attachment_id)
+            VALUES (now(), null, 'Гавайская', 'Ветчина и ананасы', 324, 1, 342, 1, null);
+            INSERT INTO projectT.product (created_datetime, deleted_datetime, name, description, price, portion, weight, product_type_id, attachment_id)
+            VALUES (now(), null, 'Диаволо', 'Острая пицца с острым перцем', 362, 1, 342, 1, null);
+            INSERT INTO projectT.product (created_datetime, deleted_datetime, name, description, price, portion, weight, product_type_id, attachment_id)
+            VALUES (now(), null, 'Пепперони', 'Колбаски пепперони', 367, 1, 345, 1, null);
+            INSERT INTO projectT.product (created_datetime, deleted_datetime, name, description, price, portion, weight, product_type_id, attachment_id)
+            VALUES (now(), null, 'Четыре сыра', 'Сырная пицца с разными сырами', 399, 1, 350, 1, null);
+            INSERT INTO projectT.product (created_datetime, deleted_datetime, name, description, price, portion, weight, product_type_id, attachment_id)
+            VALUES (now(), null, 'Овощи и грибы', 'Пицца  совощами и, внезапно!, грибами', 322, 1, 322, 1, null);
+        </sql>
+    </changeSet>
+
+    <changeSet id="mockData-06" author="bullov">
+        <preConditions>
+            <tableExists schemaName="project_T" tableName="combo"/>
+            <tableIsEmpty schemaName="project_T" tableName="combo"/>
+        </preConditions>
+        <sql>
+            INSERT INTO projectT.combo (created_datetime, deleted_datetime, name, description, price, attachment_id)
+            VALUES (now(), null, 'Морской сет', 'Сет с морскими гадами', 999, null);
+            INSERT INTO projectT.combo (created_datetime, deleted_datetime, name, description, price, attachment_id)
+            VALUES (now(), null, 'Азия сет', 'Сет с азиатами', 869, null);
+            INSERT INTO projectT.combo (created_datetime, deleted_datetime, name, description, price, attachment_id)
+            VALUES (now(), null, 'Большой куш', 'Что-то про алмаз и цыган', 1299, null);
+            INSERT INTO projectT.combo (created_datetime, deleted_datetime, name, description, price, attachment_id)
+            VALUES (now(), null, 'Карты, деньги, два ствола', 'Про покер и два дорогих мушкета', 1056, null);
+            INSERT INTO projectT.combo (created_datetime, deleted_datetime, name, description, price, attachment_id)
+            VALUES (now(), null, 'Джентельмены', 'Про траву и боксерского тренера', 1599, null);
+        </sql>
+    </changeSet>
+
+    <!-- Accounts creds: (user1/2/3:12345678; manager:manager; admin:admin)-->
+    <changeSet id="mockData-07" author="bullov">
+        <preConditions>
+            <tableExists schemaName="project_T" tableName="account"/>
+            <tableIsEmpty schemaName="project_T" tableName="account"/>
+        </preConditions>
+        <sql>
+            INSERT INTO projectT.account (created_datetime, deleted_datetime, login, password, email, name, surname, phone, role_id)
+            VALUES (now(), null, 'user1', '$2a$12$XxumGOaUfTUdCoLUlOivBukqko9uHYcHfaL2QmbDSCOK7yB2O7roi', 'user1@mail.ru', 'Ivan', 'Pupkin', '+79058014578', 1);
+            INSERT INTO projectT.account (created_datetime, deleted_datetime, login, password, email, name, surname, phone, role_id)
+            VALUES (now(), null, 'user2', '$2a$12$7i.dsYCWj7Y1n7KddcvFSOmOyvn/N43Afm4y1NQ7fHreY72VESaf2', 'user2@mail.ru', 'Alexey', 'Berezin', '+79028334590', 1);
+            INSERT INTO projectT.account (created_datetime, deleted_datetime, login, password, email, name, surname, phone, role_id)
+            VALUES (now(), null, 'user3', '$2a$12$uQLxPQRZKNHMZrfno466HuV/4aeuFMf6drKl4x6pTZHMC3un1Yi1G', 'user3@mail.ru', 'Виталий', 'Пупышев', '+79396547899', 1);
+            INSERT INTO projectT.account (created_datetime, deleted_datetime, login, password, email, name, surname, phone, role_id)
+            VALUES (now(), null, 'manager', '$2a$12$p9fCMJlpdmtZw8HKr0KK5.dg/CaLZ8Fnix9C8EAdgQ1qXy8X.WAL2', 'manager@mail.ru', 'Евгений', 'Филипчак', '+79997841454', 2);
+            INSERT INTO projectT.account (created_datetime, deleted_datetime, login, password, email, name, surname, phone, role_id)
+            VALUES (now(), null, 'admin', '$2a$12$YYCg6IBfAF6a3AzWqP6lVuaNJT0XLSBYVcln7druQeiIOJ6hk3wle', 'admin@mail.ru', 'Влад', 'Бу', '+79876543211', 3);
+        </sql>
+    </changeSet>
+
+    <changeSet id="mockData-08" author="bullov">
+        <preConditions>
+            <tableExists schemaName="project_T" tableName="discount"/>
+            <tableIsEmpty schemaName="project_T" tableName="discount"/>
+        </preConditions>
+        <sql>
+            INSERT INTO projectT.discount (created_datetime, deleted_datetime, name, description, percent, promocode, is_active, start_datetime, end_datetime)
+            VALUES (now(), null, 'Скидка на день рождения', '-15% именинникам', 15, null, true, null, null);
+            INSERT INTO projectT.discount (created_datetime, deleted_datetime, name, description, percent, promocode, is_active, start_datetime, end_datetime)
+            VALUES (now(), null, 'Скидка за самовывоз', '-20% за самовывоз', 20, null, false, null, null);
+            INSERT INTO projectT.discount (created_datetime, deleted_datetime, name, description, percent, promocode, is_active, start_datetime, end_datetime)
+            VALUES (now(), null, 'Скидка на неделю', '-5% на неделе', 5, 'WEEK_SALE', true, now(), now() + interval '7 days');
+            INSERT INTO projectT.discount (created_datetime, deleted_datetime, name, description, percent, promocode, is_active, start_datetime, end_datetime)
+            VALUES (now(), null, 'Скидка по промокоду', '-3%', 3, '3PCODE', true, null, null);
+            INSERT INTO projectT.discount (created_datetime, deleted_datetime, name, description, percent, promocode, is_active, start_datetime, end_datetime)
+            VALUES (now(), null, 'Скидка по промокоду (disabled)', '-23%', 23, '23PCODE', false, null, null);
+            INSERT INTO discount (created_datetime, deleted_datetime, name, description, percent, promocode, is_active, start_datetime, end_datetime)
+            VALUES (now(), null, 'Скидка на набор', '-25%', 25, null, true, null, null);
+        </sql>
+    </changeSet>
+
+    <changeSet id="mockData-09" author="bullov">
+        <preConditions>
+            <tableExists schemaName="project_T" tableName="feedback"/>
+            <tableIsEmpty schemaName="project_T" tableName="feedback"/>
+        </preConditions>
+        <sql>
+            INSERT INTO projectT.feedback (created_datetime, deleted_datetime, comment, account_id) VALUES (now() - interval '3 days', null, 'Очень вкусно! Быстрая доставка.', 1);
+            INSERT INTO projectT.feedback (created_datetime, deleted_datetime, comment, account_id) VALUES (now() - interval '2 days', null, 'Быстро доставили. 6/10 риса больше чем начинки', 2);
+            INSERT INTO projectT.feedback (created_datetime, deleted_datetime, comment, account_id) VALUES (now(), null, 'Пицца отвратительная 2/10 верните деньги!', 2);
+            INSERT INTO projectT.feedback (created_datetime, deleted_datetime, comment, account_id) VALUES (now(), null, '10/10 лучшее место в городе', 3);
+            INSERT INTO projectT.feedback (created_datetime, deleted_datetime, comment, account_id) VALUES (now(), null, 'КОмментарий от манагера', 4);
+            INSERT INTO projectT.feedback (created_datetime, deleted_datetime, comment, account_id) VALUES (now(), null, 'Комментарий от админа', 5);
+            INSERT INTO projectT.feedback (created_datetime, deleted_datetime, comment, account_id) VALUES (now(), null, 'Брал салаты привезли его целым не раскиданным по коробке, 8/10', 1);
+        </sql>
+    </changeSet>
+
+    <changeSet id="mockData-10" author="bullov">
+        <preConditions>
+            <tableExists schemaName="project_T" tableName="ref_product_component"/>
+            <tableIsEmpty schemaName="project_T" tableName="ref_product_component"/>
+        </preConditions>
+        <sql>
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (1, 1, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (1, 2, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (1, 3, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (2, 1, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (2, 2, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (2, 3, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (2, 4, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (3, 1, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (3, 2, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (3, 3, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (3, 32, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (4, 36, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (4, 9, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (4, 8, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (4, 42, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (4, 38, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (5, 36, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (5, 39, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (5, 41, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (5, 44, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (5, 21, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (6, 36, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (6, 41, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (6, 42, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (6, 44, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (6, 38, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (6, 18, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (6, 8, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (7, 1, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (7, 2, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (8, 1, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (8, 7, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (9, 1, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (9, 9, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (10, 8, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (10, 47, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (10, 48, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (10, 46, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (11, 24, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (11, 48, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (11, 35, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (12, 24, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (12, 48, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (12, 35, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (12, 9, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (13, 18, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (13, 8, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (13, 5, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (13, 24, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (14, 18, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (14, 8, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (14, 5, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (14, 24, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (14, 9, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (15, 26, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (15, 42, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (15, 46, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (15, 10, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (20, 13, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (20, 11, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (21, 11, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (21, 25, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (21, 30, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (22, 13, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (22, 21, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (22, 22, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (22, 29, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (22, 43, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (23, 29, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (23, 11, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (23, 13, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (24, 11, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (24, 12, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (24, 20, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (25, 39, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (25, 37, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (25, 38, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (25, 42, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (25, 35, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (25, 29, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (25, 26, true);
+            INSERT INTO projectT.ref_product_component (product_id, component_id, is_actual) VALUES (25, 27, true);
+        </sql>
+    </changeSet>
+
+    <changeSet id="mockData-11" author="bullov">
+        <preConditions>
+            <tableExists schemaName="project_T" tableName="ref_combo_product"/>
+            <tableIsEmpty schemaName="project_T" tableName="ref_combo_product"/>
+        </preConditions>
+        <sql>
+            INSERT INTO projectT.ref_combo_product (combo_id, product_id, product_count, is_actual) VALUES (1, 1, 10, true);
+            INSERT INTO projectT.ref_combo_product (combo_id, product_id, product_count, is_actual) VALUES (1, 3, 6, true);
+            INSERT INTO projectT.ref_combo_product (combo_id, product_id, product_count, is_actual) VALUES (1, 7, 6, true);
+            INSERT INTO projectT.ref_combo_product (combo_id, product_id, product_count, is_actual) VALUES (1, 8, 6, true);
+            INSERT INTO projectT.ref_combo_product (combo_id, product_id, product_count, is_actual) VALUES (1, 9, 6, true);
+            INSERT INTO projectT.ref_combo_product (combo_id, product_id, product_count, is_actual) VALUES (2, 1, 8, true);
+            INSERT INTO projectT.ref_combo_product (combo_id, product_id, product_count, is_actual) VALUES (2, 2, 8, true);
+            INSERT INTO projectT.ref_combo_product (combo_id, product_id, product_count, is_actual) VALUES (2, 7, 8, true);
+            INSERT INTO projectT.ref_combo_product (combo_id, product_id, product_count, is_actual) VALUES (2, 9, 8, true);
+            INSERT INTO projectT.ref_combo_product (combo_id, product_id, product_count, is_actual) VALUES (3, 1, 12, true);
+            INSERT INTO projectT.ref_combo_product (combo_id, product_id, product_count, is_actual) VALUES (3, 2, 6, true);
+            INSERT INTO projectT.ref_combo_product (combo_id, product_id, product_count, is_actual) VALUES (3, 3, 6, true);
+            INSERT INTO projectT.ref_combo_product (combo_id, product_id, product_count, is_actual) VALUES (3, 7, 10, true);
+            INSERT INTO projectT.ref_combo_product (combo_id, product_id, product_count, is_actual) VALUES (3, 8, 10, true);
+            INSERT INTO projectT.ref_combo_product (combo_id, product_id, product_count, is_actual) VALUES (3, 9, 10, true);
+            INSERT INTO projectT.ref_combo_product (combo_id, product_id, product_count, is_actual) VALUES (4, 1, 16, true);
+            INSERT INTO projectT.ref_combo_product (combo_id, product_id, product_count, is_actual) VALUES (4, 2, 10, true);
+            INSERT INTO projectT.ref_combo_product (combo_id, product_id, product_count, is_actual) VALUES (4, 3, 10, true);
+            INSERT INTO projectT.ref_combo_product (combo_id, product_id, product_count, is_actual) VALUES (5, 1, 12, true);
+            INSERT INTO projectT.ref_combo_product (combo_id, product_id, product_count, is_actual) VALUES (5, 2, 12, true);
+            INSERT INTO projectT.ref_combo_product (combo_id, product_id, product_count, is_actual) VALUES (5, 3, 12, true);
+            INSERT INTO projectT.ref_combo_product (combo_id, product_id, product_count, is_actual) VALUES (5, 7, 10, true);
+            INSERT INTO projectT.ref_combo_product (combo_id, product_id, product_count, is_actual) VALUES (5, 8, 10, true);
+            INSERT INTO projectT.ref_combo_product (combo_id, product_id, product_count, is_actual) VALUES (5, 9, 10, true);
+        </sql>
+    </changeSet>
+
+    <changeSet id="mockData-12" author="bullov">
+        <preConditions>
+            <tableExists schemaName="project_T" tableName="ref_combo_discount"/>
+            <tableIsEmpty schemaName="project_T" tableName="ref_combo_discount"/>
+        </preConditions>
+        <sql>
+            INSERT INTO ref_combo_discount (combo_id, discount_id, is_actual) VALUES (5, 6, true);
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
