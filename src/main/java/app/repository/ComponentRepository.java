@@ -1,19 +1,23 @@
 package app.repository;
 
-import app.generated.jooq.Sequences;
-import app.generated.jooq.tables.pojos.Component;
+import app.Utils;
+import app.generated.projectT.Sequences;
+import app.generated.projectT.tables.daos.ComponentDao;
+import app.generated.projectT.tables.pojos.Component;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
-import static app.generated.jooq.Tables.COMPONENT;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+
+import static app.generated.projectT.Tables.COMPONENT;
 
 @Repository
 @RequiredArgsConstructor
 public class ComponentRepository {
     private final DSLContext dslContext;
+    private final ComponentDao componentDao;
 
     public List<Component> getList() {
         return dslContext.selectFrom(COMPONENT)
@@ -21,30 +25,28 @@ public class ComponentRepository {
                 .fetchInto(Component.class);
     }
 
-    public Component getById(Long componentId) {
+    public Optional<Component> getActualComponent(Long componentEntityId) {
         return dslContext.selectFrom(COMPONENT)
-                .where(COMPONENT.COMPONENT_ID.eq(componentId), COMPONENT.DELETED_DATETIME.isNull())
-                .fetchOneInto(Component.class);
+                .where(
+                        COMPONENT.ENTITY_ID.eq(componentEntityId),
+                        COMPONENT.DELETED_DATETIME.isNull()
+                )
+                .fetchOptionalInto(Component.class);
     }
 
     public void deleteById(Long componentId) {
         dslContext.update(COMPONENT)
-                .set(COMPONENT.DELETED_DATETIME, LocalDateTime.now())
-                .where(COMPONENT.COMPONENT_ID.eq(componentId), COMPONENT.DELETED_DATETIME.isNull())
+                .set(COMPONENT.DELETED_DATETIME, Utils.now())
+                .where(COMPONENT.ID.eq(componentId))
                 .execute();
     }
 
     public void createNewComponent(Component newComponent) {
-        dslContext.insertInto(COMPONENT)
-                .set(COMPONENT.COMPONENT_ID, newComponent.getComponentId())
-                .set(COMPONENT.CREATED_DATETIME, LocalDateTime.now())
-                .set(COMPONENT.NAME, newComponent.getName())
-                .set(COMPONENT.DESCRIPTION, newComponent.getDescription())
-                .execute();
+        componentDao.insert(newComponent);
     }
 
     public Long getNextComponentId() {
-        return dslContext.nextval(Sequences.COMPONENT_COMPONENT_ID_SEQ);
+        return dslContext.nextval(Sequences.COMPONENT_ID_SEQ);
     }
 
 }

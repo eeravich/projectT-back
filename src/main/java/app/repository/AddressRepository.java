@@ -1,19 +1,24 @@
 package app.repository;
 
-import app.generated.jooq.Sequences;
-import app.generated.jooq.tables.pojos.Address;
+import app.Utils;
+import app.generated.projectT.Sequences;
+import app.generated.projectT.tables.daos.AddressDao;
+import app.generated.projectT.tables.pojos.Address;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
-import static app.generated.jooq.Tables.ADDRESS;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+
+import static app.generated.projectT.Tables.ADDRESS;
 
 @Repository
 @RequiredArgsConstructor
 public class AddressRepository {
     private final DSLContext dslContext;
+    private final AddressDao addressDao;
 
     public List<Address> getList() {
         return dslContext.selectFrom(ADDRESS)
@@ -21,40 +26,36 @@ public class AddressRepository {
                 .fetchInto(Address.class);
     }
 
-    public List<Address> getListByUser(Long accountId) {
+    public List<Address> getListByUser(Long accountEntityId) {
         return dslContext.selectFrom(ADDRESS)
-                .where(ADDRESS.ACCOUNT_ID.eq(accountId), ADDRESS.DELETED_DATETIME.isNull())
+                .where(
+                        ADDRESS.ACCOUNT_ENTITY_ID.eq(accountEntityId),
+                        ADDRESS.DELETED_DATETIME.isNull()
+                )
                 .fetchInto(Address.class);
     }
 
-    public Address getById(Long addressId) {
+    public Optional<Address> getActualAddress(Long addressEntityId) {
         return dslContext.selectFrom(ADDRESS)
-                .where(ADDRESS.ADDRESS_ID.eq(addressId), ADDRESS.DELETED_DATETIME.isNull())
-                .fetchOneInto(Address.class);
+                .where(
+                        ADDRESS.ENTITY_ID.eq(addressEntityId),
+                        ADDRESS.DELETED_DATETIME.isNull()
+                )
+                .fetchOptionalInto(Address.class);
     }
 
     public void createAddress(Address address) {
-        dslContext.insertInto(ADDRESS)
-                .set(ADDRESS.ADDRESS_ID, address.getAddressId())
-                .set(ADDRESS.CREATED_DATETIME, LocalDateTime.now())
-                .set(ADDRESS.STREET, address.getStreet())
-                .set(ADDRESS.HOUSE, address.getHouse())
-                .set(ADDRESS.APARTMENT, address.getApartment())
-                .set(ADDRESS.ENTRANCE, address.getEntrance())
-                .set(ADDRESS.FLOOR, address.getFloor())
-                .set(ADDRESS.CODE, address.getCode())
-                .set(ADDRESS.ACCOUNT_ID, address.getAccountId())
-                .execute();
+        addressDao.insert(address);
     }
 
     public void deleteAddress(Long addressId) {
         dslContext.update(ADDRESS)
-                .set(ADDRESS.DELETED_DATETIME, LocalDateTime.now())
-                .where(ADDRESS.ADDRESS_ID.eq(addressId), ADDRESS.DELETED_DATETIME.isNull())
+                .set(ADDRESS.DELETED_DATETIME, Utils.now())
+                .where(ADDRESS.ID.eq(addressId))
                 .execute();
     }
 
     public Long getNextAddressId() {
-        return dslContext.nextval(Sequences.ADDRESS_ADDRESS_ID_SEQ);
+        return dslContext.nextval(Sequences.ADDRESS_ID_SEQ);
     }
 }

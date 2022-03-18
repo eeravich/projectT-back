@@ -1,6 +1,7 @@
 package app.services;
 
 import app.entities.pojos.AccountPojo;
+import app.generated.projectT.tables.pojos.Account;
 import app.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,11 +22,12 @@ public class DefaultUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        AccountPojo account = accountRepository.findByLogin(login);
+        Account account = accountRepository.findByLogin(login);
         if (account == null) {
             throw new UsernameNotFoundException("User" + login + " not found");
         }
-        List<GrantedAuthority> authList = Collections.singletonList(new SimpleGrantedAuthority(account.getRoleName()));
+//        List<GrantedAuthority> authList = Collections.singletonList(new SimpleGrantedAuthority(account.getRoleName()));
+        List<GrantedAuthority> authList = Collections.emptyList();
         return new User(account.getLogin(), account.getPassword(), authList);
     }
 }

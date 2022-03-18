@@ -1,24 +1,24 @@
 package app.repository;
 
+import app.Utils;
 import app.entities.pojos.ComboPojo;
-import app.generated.jooq.Sequences;
-import app.generated.jooq.tables.pojos.Combo;
-import app.generated.jooq.tables.pojos.Discount;
+import app.generated.projectT.Sequences;
+import app.generated.projectT.tables.daos.ComboDao;
+import app.generated.projectT.tables.pojos.Combo;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
-import static app.generated.jooq.Tables.REF_COMBO_DISCOUNT;
-import static app.generated.jooq.Tables.DISCOUNT;
-import static app.generated.jooq.Tables.COMBO;
+import static app.generated.projectT.Tables.COMBO;
 
 @Repository
 @RequiredArgsConstructor
 public class ComboRepository {
     private final DSLContext dslContext;
+    private final ComboDao comboDao;
 
     public List<ComboPojo> getList() {
         return dslContext.selectFrom(COMBO)
@@ -26,46 +26,42 @@ public class ComboRepository {
                 .fetchInto(ComboPojo.class);
     }
 
-    public ComboPojo getById(Long comboId) {
+    public Optional<ComboPojo> getActualCombo(Long comboEntityId) {
         return dslContext.selectFrom(COMBO)
-                .where(COMBO.COMBO_ID.eq(comboId), COMBO.DELETED_DATETIME.isNull())
-                .fetchOneInto(ComboPojo.class);
+                .where(
+                        COMBO.ENTITY_ID.eq(comboEntityId),
+                        COMBO.DELETED_DATETIME.isNull()
+                )
+                .fetchOptionalInto(ComboPojo.class);
     }
 
     public void createCombo(Combo combo) {
-        dslContext.insertInto(COMBO)
-                .set(COMBO.COMBO_ID, combo.getComboId())
-                .set(COMBO.CREATED_DATETIME, LocalDateTime.now())
-                .set(COMBO.NAME, combo.getName())
-                .set(COMBO.DESCRIPTION, combo.getDescription())
-                .set(COMBO.PRICE, combo.getPrice())
-                .set(COMBO.ATTACHMENT_ID, combo.getAttachmentId())
-                .execute();
+        comboDao.insert(combo);
     }
 
     public void deleteCombo(Long comboId) {
         dslContext.update(COMBO)
-                .set(COMBO.DELETED_DATETIME, LocalDateTime.now())
-                .where(COMBO.COMBO_ID.eq(comboId), COMBO.DELETED_DATETIME.isNull())
+                .set(COMBO.DELETED_DATETIME, Utils.now())
+                .where(COMBO.ID.eq(comboId))
                 .execute();
     }
 
     public Long getNextComboId() {
-        return dslContext.nextval(Sequences.COMBO_COMBO_ID_SEQ);
+        return dslContext.nextval(Sequences.COMBO_ID_SEQ);
     }
 
-    public List<Discount> getDiscountsByComboId(Long comboId) {
-        return dslContext.select(DISCOUNT.fields())
-                .from(REF_COMBO_DISCOUNT)
-                .leftJoin(DISCOUNT).on(REF_COMBO_DISCOUNT.DISCOUNT_ID.eq(DISCOUNT.DISCOUNT_ID))
-                .where(REF_COMBO_DISCOUNT.COMBO_ID.eq(comboId), DISCOUNT.DELETED_DATETIME.isNull())
-                .fetchInto(Discount.class);
-    }
+//    public List<Discount> getDiscountsByComboId(Long comboId) {
+//        return dslContext.select(DISCOUNT.fields())
+//                .from(REF_COMBO_DISCOUNT)
+//                .leftJoin(DISCOUNT).on(REF_COMBO_DISCOUNT.DISCOUNT_ID.eq(DISCOUNT.DISCOUNT_ID))
+//                .where(REF_COMBO_DISCOUNT.COMBO_ID.eq(comboId), DISCOUNT.DELETED_DATETIME.isNull())
+//                .fetchInto(Discount.class);
+//    }
 
-    public List<Combo> getListByComboIds(List<Long> comboIdList) {
+    public List<Combo> getList(List<Long> comboIdList) {
         return dslContext.select(COMBO.fields())
                 .from(COMBO)
-                .where(COMBO.COMBO_ID.in(comboIdList), COMBO.DELETED_DATETIME.isNull())
+                .where(COMBO.ID.in(comboIdList))
                 .fetchInto(Combo.class);
     }
 }

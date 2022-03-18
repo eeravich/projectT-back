@@ -4,9 +4,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
-    <modules>
-        <module>liquibase</module>
-    </modules>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -21,7 +18,7 @@
     <name>projectT</name>
     <description>projectT</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
     </properties>
 
     <dependencies>
@@ -92,6 +89,16 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-commons</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>1.4.2.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>0.2.1</version>
+        </dependency>
 
         <!-- Swagger dependencies-->
         <dependency>
@@ -123,6 +130,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <executable>true</executable>
+                </configuration>
             </plugin>
 
             <plugin>
@@ -135,6 +145,15 @@
                         <version>${postgresql.version}</version>
                     </dependency>
                 </dependencies>
+
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
                 <configuration>
                     <jdbc>
                         <driver>org.postgresql.Driver</driver>
@@ -143,22 +162,83 @@
                         <password>${db.password}</password>
                     </jdbc>
                     <generator>
+                        <database>
+                            <name>org.jooq.meta.postgres.PostgresDatabase</name>
+                            <includeTables>true</includeTables>
+                            <includeSequences>true</includeSequences>
+                            <inputSchema>project_T</inputSchema>
+                        </database>
+                        <target>
+                            <packageName>app.generated.projectT</packageName>
+                            <directory>target/generated-sources/jooq</directory>
+                        </target>
                         <generate>
                             <pojos>true</pojos>
                             <daos>true</daos>
+                            <validationAnnotations>true</validationAnnotations>
+                            <springAnnotations>true</springAnnotations>
+                            <globalObjectReferences>true</globalObjectReferences>
+                            <pojosEqualsAndHashCode>true</pojosEqualsAndHashCode>
                         </generate>
-                        <name>org.jooq.codegen.JavaGenerator</name>
-                        <database>
-                            <name>org.jooq.meta.postgres.PostgresDatabase</name>
-                            <includes>.*</includes>
-                            <excludes></excludes>
-                            <inputSchema>projectT</inputSchema>
-                        </database>
-                        <target>
-                            <packageName>app.generated.jooq</packageName>
-                            <directory>src/main/java</directory>
-                        </target>
                     </generator>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>5.1.0</version>
+                <executions>
+                    <execution>
+                        <id>test</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/specifications/productApi.yaml</inputSpec>
+                            <output>target/generated-sources/openapi</output>
+                            <generatorName>spring</generatorName>
+                            <library>spring-cloud</library>
+                            <apiPackage>app.generated.projectT.api</apiPackage>
+                            <modelPackage>app.generated.projectT.model</modelPackage>
+                            <generateSupportingFiles>false</generateSupportingFiles>
+                            <configOptions>
+                                <interfaceOnly>true</interfaceOnly>
+                                <useTags>true</useTags>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <source>16</source>
+                    <target>16</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <version>0.2.0</version>
+                        </path>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                        </path>
+                    </annotationProcessorPaths>
+                    <compilerArgs>
+                        <compilerArg>
+                            -Amapstruct.unmappedTargetPolicy=IGNORE
+                        </compilerArg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
         </plugins>

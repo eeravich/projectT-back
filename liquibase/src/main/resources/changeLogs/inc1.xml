@@ -9,42 +9,22 @@
                 <tableExists tableName="account" schemaName="project_T"/>
             </not>
         </preConditions>
-        <createTable tableName="account">
-            <column name="id" autoIncrement="true" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="account_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_datetime" type="DATETIME">
-                <constraints nullable="false"/>
-            </column>
-            <column name="deleted_datetime" type="DATETIME"/>
-            <column name="login" type="TEXT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="password" type="TEXT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="email" type="TEXT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="name" type="TEXT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="surname" type="TEXT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="phone" type="TEXT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="role_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="is_blocked" type="BOOLEAN" defaultValue="false">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
+        <sql>
+            CREATE TABLE "project_T".account(
+                id BIGSERIAL NOT NULL PRIMARY KEY,
+                entity_id BIGINT NOT NULL,
+                created_datetime TIMESTAMP NOT NULL default now(),
+                deleted_datetime TIMESTAMP,
+                login TEXT NOT NULL,
+                password TEXT NOT NULL,
+                email TEXT NOT NULL,
+                name TEXT NOT NULL,
+                surname TEXT NOT NULL,
+                phone TEXT NOT NULL,
+                role_id INTEGER NOT NULL,
+                is_blocked BOOLEAN NOT NULL DEFAULT FALSE
+            );
+        </sql>
     </changeSet>
 
     <changeSet id="projectT-initialization-02" author="bullov" logicalFilePath="inc1.xml">
@@ -53,25 +33,21 @@
                 <tableExists tableName="address" schemaName="project_T"/>
             </not>
         </preConditions>
-        <createTable tableName="address">
-            <column name="id" autoIncrement="true" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="address_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_datetime" type="DATETIME">
-                <constraints nullable="false"/>
-            </column>
-            <column name="deleted_datetime" type="DATETIME"/>
-            <column name="street" type="TEXT"/>
-            <column name="house" type="TEXT"/>
-            <column name="apartment" type="TEXT"/>
-            <column name="entrance" type="INT"/>
-            <column name="floor" type="INT"/>
-            <column name="code" type="TEXT"/>
-            <column name="account_id" type="BIGINT"/>
-        </createTable>
+        <sql>
+            CREATE TABLE "project_T".address(
+                id BIGSERIAL NOT NULL PRIMARY KEY,
+                entity_id BIGINT NOT NULL,
+                created_datetime TIMESTAMP NOT NULL default now(),
+                deleted_datetime TIMESTAMP,
+                street TEXT,
+                house TEXT,
+                apartment TEXT,
+                entrance INTEGER,
+                floor INTEGER,
+                code TEXT,
+                account_entity_id BIGINT
+            );
+        </sql>
     </changeSet>
 
     <changeSet id="projectT-initialization-03" author="bullov" logicalFilePath="inc1.xml">
@@ -80,22 +56,18 @@
                 <tableExists tableName="combo" schemaName="project_T"/>
             </not>
         </preConditions>
-        <createTable tableName="combo">
-            <column name="id" autoIncrement="true" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="combo_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_datetime" type="DATETIME">
-                <constraints nullable="false"/>
-            </column>
-            <column name="deleted_datetime" type="DATETIME"/>
-            <column name="name" type="TEXT"/>
-            <column name="description" type="TEXT"/>
-            <column name="price" type="NUMERIC(12, 2)"/>
-            <column name="attachment_id" type="BIGINT"/>
-        </createTable>
+        <sql>
+            CREATE TABLE "project_T".combo(
+                id BIGSERIAL NOT NULL PRIMARY KEY,
+                entity_id BIGINT NOT NULL,
+                created_datetime TIMESTAMP NOT NULL default now(),
+                deleted_datetime TIMESTAMP,
+                name TEXT,
+                description TEXT,
+                price NUMERIC(12, 2),
+                attachment_id BIGINT
+            );
+        </sql>
     </changeSet>
 
     <changeSet id="projectT-initialization-04" author="bullov" logicalFilePath="inc1.xml">
@@ -104,20 +76,16 @@
                 <tableExists tableName="component" schemaName="project_T"/>
             </not>
         </preConditions>
-        <createTable tableName="component">
-            <column name="id" autoIncrement="true" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="component_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_datetime" type="DATETIME">
-                <constraints nullable="false"/>
-            </column>
-            <column name="deleted_datetime" type="DATETIME"/>
-            <column name="name" type="TEXT"/>
-            <column name="description" type="TEXT"/>
-        </createTable>
+        <sql>
+            CREATE TABLE "project_T".component(
+                id BIGSERIAL NOT NULL PRIMARY KEY,
+                entity_id BIGINT NOT NULL,
+                created_datetime TIMESTAMP NOT NULL default now(),
+                deleted_datetime TIMESTAMP,
+                name TEXT,
+                description TEXT
+            );
+        </sql>
     </changeSet>
 
     <changeSet id="projectT-initialization-05" author="bullov" logicalFilePath="inc1.xml">
@@ -126,27 +94,21 @@
                 <tableExists tableName="discount" schemaName="project_T"/>
             </not>
         </preConditions>
-        <createTable tableName="discount">
-            <column name="id" autoIncrement="true" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="discount_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_datetime" type="DATETIME">
-                <constraints nullable="false"/>
-            </column>
-            <column name="deleted_datetime" type="DATETIME"/>
-            <column name="name" type="TEXT"/>
-            <column name="description" type="TEXT"/>
-            <column name="percent" type="INT"/>
-            <column name="promocode" type="INT"/>
-            <column name="is_active" type="BOOLEAN" defaultValue="false">
-                <constraints nullable="false"/>
-            </column>
-            <column name="start_datetime" type="DATETIME"/>
-            <column name="end_datetime" type="DATETIME"/>
-        </createTable>
+        <sql>
+            CREATE TABLE "project_T".discount(
+                id BIGSERIAL NOT NULL PRIMARY KEY,
+                entity_id BIGINT NOT NULL,
+                created_datetime TIMESTAMP NOT NULL default now(),
+                deleted_datetime TIMESTAMP,
+                name TEXT,
+                description TEXT,
+                percent INTEGER,
+                promocode TEXT,
+                is_active BOOLEAN NOT NULL DEFAULT FALSE,
+                start_datetime TIMESTAMP,
+                end_datetime TIMESTAMP
+            );
+        </sql>
     </changeSet>
 
     <changeSet id="projectT-initialization-06" author="bullov" logicalFilePath="inc1.xml">
@@ -155,22 +117,16 @@
                 <tableExists tableName="feedback" schemaName="project_T"/>
             </not>
         </preConditions>
-        <createTable tableName="feedback">
-            <column name="id" autoIncrement="true" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="feedback_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_datetime" type="DATETIME">
-                <constraints nullable="false"/>
-            </column>
-            <column name="deleted_datetime" type="DATETIME"/>
-            <column name="comment" type="TEXT"/>
-            <column name="account_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
+        <sql>
+            CREATE TABLE "project_T".feedback(
+                id BIGSERIAL NOT NULL PRIMARY KEY,
+                entity_id BIGINT NOT NULL,
+                created_datetime TIMESTAMP NOT NULL default now(),
+                deleted_datetime TIMESTAMP,
+                comment TEXT,
+                account_entity_id BIGINT NOT NULL
+            );
+        </sql>
     </changeSet>
 
     <changeSet id="projectT-initialization-07" author="bullov" logicalFilePath="inc1.xml">
@@ -179,32 +135,26 @@
                 <tableExists tableName="order" schemaName="project_T"/>
             </not>
         </preConditions>
-        <createTable tableName="order">
-            <column name="id" autoIncrement="true" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="order_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_datetime" type="DATETIME">
-                <constraints nullable="false"/>
-            </column>
-            <column name="deleted_datetime" type="DATETIME"/>
-            <column name="account_id" type="BIGINT"/>
-            <column name="phone" type="TEXT"/>
-            <column name="name" type="TEXT"/>
-            <column name="is_cash" type="BOOLEAN" defaultValue="false">
-                <constraints nullable="false"/>
-            </column>
-            <column name="change" type="INT"/>
-            <column name="comment" type="TEXT"/>
-            <column name="addons_count" type="INT"/>
-            <column name="discount_id" type="BIGINT"/>
-            <column name="delivery_time" type="DATETIME"/>
-            <column name="email" type="TEXT"/>
-            <column name="status_id" type="BIGINT"/>
-            <column name="address_id" type="BIGINT"/>
-        </createTable>
+        <sql>
+            CREATE TABLE "project_T"."order"(
+                id BIGSERIAL NOT NULL PRIMARY KEY,
+                entity_id BIGINT NOT NULL,
+                created_datetime TIMESTAMP NOT NULL default now(),
+                deleted_datetime TIMESTAMP,
+                account_entity_id BIGINT,
+                phone TEXT,
+                name TEXT,
+                is_cash BOOLEAN NOT NULL DEFAULT FALSE,
+                change INTEGER,
+                comment TEXT,
+                addons_count INTEGER,
+                discount_id BIGINT,
+                delivery_time TIMESTAMP,
+                email TEXT,
+                status_id INTEGER,
+                address_entity_id BIGINT
+            );
+        </sql>
     </changeSet>
 
     <changeSet id="projectT-initialization-08" author="bullov" logicalFilePath="inc1.xml">
@@ -213,12 +163,12 @@
                 <tableExists tableName="order_status" schemaName="project_T"/>
             </not>
         </preConditions>
-        <createTable tableName="order_status">
-            <column name="id" autoIncrement="true" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="name" type="TEXT"/>
-        </createTable>
+        <sql>
+            CREATE TABLE "project_T".order_status(
+                id SERIAL NOT NULL PRIMARY KEY,
+                name TEXT
+            );
+        </sql>
     </changeSet>
 
     <changeSet id="projectT-initialization-09" author="bullov" logicalFilePath="inc1.xml">
@@ -227,25 +177,21 @@
                 <tableExists tableName="product" schemaName="project_T"/>
             </not>
         </preConditions>
-        <createTable tableName="product">
-            <column name="id" autoIncrement="true" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="product_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_datetime" type="DATETIME">
-                <constraints nullable="false"/>
-            </column>
-            <column name="deleted_datetime" type="DATETIME"/>
-            <column name="name" type="TEXT"/>
-            <column name="description" type="TEXT"/>
-            <column name="price" type="NUMERIC(12, 2)"/>
-            <column name="portion" type="INT"/>
-            <column name="weight" type="INT"/>
-            <column name="product_type_id" type="BIGINT"/>
-            <column name="attachment_id" type="BIGINT"/>
-        </createTable>
+        <sql>
+            CREATE TABLE "project_T".product(
+                id BIGSERIAL NOT NULL PRIMARY KEY,
+                entity_id BIGINT NOT NULL,
+                created_datetime TIMESTAMP NOT NULL default now(),
+                deleted_datetime TIMESTAMP,
+                name TEXT,
+                description TEXT,
+                price NUMERIC(12, 2),
+                portion INTEGER,
+                weight INTEGER,
+                product_type_id INTEGER,
+                attachment_id BIGINT
+            );
+        </sql>
     </changeSet>
 
     <changeSet id="projectT-initialization-10" author="bullov" logicalFilePath="inc1.xml">
@@ -254,12 +200,12 @@
                 <tableExists tableName="product_type" schemaName="project_T"/>
             </not>
         </preConditions>
-        <createTable tableName="product_type">
-            <column name="id" autoIncrement="true" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="name" type="TEXT"/>
-        </createTable>
+        <sql>
+            CREATE TABLE "project_T".product_type(
+                id SERIAL NOT NULL PRIMARY KEY,
+                name TEXT
+            );
+        </sql>
     </changeSet>
 
     <changeSet id="projectT-initialization-11" author="bullov" logicalFilePath="inc1.xml">
@@ -268,16 +214,14 @@
                 <tableExists tableName="ref_combo_discount" schemaName="project_T"/>
             </not>
         </preConditions>
-        <createTable tableName="ref_combo_discount">
-            <column name="id" autoIncrement="true" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="combo_id" type="BIGINT"/>
-            <column name="discount_id" type="BIGINT"/>
-            <column name="is_actual" type="BOOLEAN" defaultValue="false">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
+        <sql>
+            CREATE TABLE "project_T".ref_combo_discount(
+                id BIGSERIAL NOT NULL PRIMARY KEY,
+                combo_id BIGINT,
+                discount_id BIGINT,
+                is_actual BOOLEAN NOT NULL DEFAULT FALSE
+            );
+        </sql>
     </changeSet>
 
     <changeSet id="projectT-initialization-12" author="bullov" logicalFilePath="inc1.xml">
@@ -286,17 +230,15 @@
                 <tableExists tableName="ref_combo_product" schemaName="project_T"/>
             </not>
         </preConditions>
-        <createTable tableName="ref_combo_product">
-            <column name="id" autoIncrement="true" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="combo_id" type="BIGINT"/>
-            <column name="product_id" type="BIGINT"/>
-            <column name="product_count" type="INT"/>
-            <column name="is_actual" type="BOOLEAN" defaultValue="false">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
+        <sql>
+            CREATE TABLE "project_T".ref_combo_product(
+                id BIGSERIAL NOT NULL PRIMARY KEY,
+                combo_id BIGINT,
+                product_id BIGINT,
+                product_count INTEGER,
+                is_actual BOOLEAN NOT NULL DEFAULT FALSE
+            );
+        </sql>
     </changeSet>
 
     <changeSet id="projectT-initialization-13" author="bullov" logicalFilePath="inc1.xml">
@@ -305,18 +247,15 @@
                 <tableExists tableName="ref_order_product" schemaName="project_T"/>
             </not>
         </preConditions>
-        <createTable tableName="ref_order_product">
-            <column name="id" autoIncrement="true" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="order_id" type="BIGINT"/>
-            <column name="product_id" type="BIGINT"/>
-            <column name="count" type="INT"/>
-            <column name="combo_id" type="BIGINT"/>
-            <column name="is_actual" type="BOOLEAN" defaultValue="false">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
+        <sql>
+            CREATE TABLE "project_T".ref_order_product(
+                id BIGSERIAL NOT NULL PRIMARY KEY,
+                order_id BIGINT,
+                product_id BIGINT,
+                count INTEGER,
+                is_actual BOOLEAN NOT NULL DEFAULT FALSE
+            );
+        </sql>
     </changeSet>
 
     <changeSet id="projectT-initialization-14" author="bullov" logicalFilePath="inc1.xml">
@@ -325,17 +264,15 @@
                 <tableExists tableName="ref_order_combo" schemaName="project_T"/>
             </not>
         </preConditions>
-        <createTable tableName="ref_order_combo">
-            <column name="id" autoIncrement="true" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="order_id" type="BIGINT"/>
-            <column name="combo_id" type="BIGINT"/>
-            <column name="count" type="INT"/>
-            <column name="is_actual" type="BOOLEAN" defaultValue="false">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
+        <sql>
+            CREATE TABLE "project_T".ref_order_combo(
+                id BIGSERIAL NOT NULL PRIMARY KEY,
+                order_id BIGINT,
+                combo_id BIGINT,
+                count INTEGER,
+                is_actual BOOLEAN NOT NULL DEFAULT FALSE
+            );
+        </sql>
     </changeSet>
 
     <changeSet id="projectT-initialization-15" author="bullov" logicalFilePath="inc1.xml">
@@ -344,16 +281,14 @@
                 <tableExists tableName="ref_product_component" schemaName="project_T"/>
             </not>
         </preConditions>
-        <createTable tableName="ref_product_component">
-            <column name="id" autoIncrement="true" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="product_id" type="BIGINT"/>
-            <column name="component_id" type="BIGINT"/>
-            <column name="is_actual" type="BOOLEAN" defaultValue="false">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
+        <sql>
+            CREATE TABLE "project_T".ref_product_component(
+                id BIGSERIAL NOT NULL PRIMARY KEY,
+                product_id BIGINT,
+                component_id BIGINT,
+                is_actual BOOLEAN NOT NULL DEFAULT FALSE
+            );
+        </sql>
     </changeSet>
 
     <changeSet id="projectT-initialization-16" author="bullov" logicalFilePath="inc1.xml">
@@ -362,16 +297,14 @@
                 <tableExists tableName="ref_product_discount" schemaName="project_T"/>
             </not>
         </preConditions>
-        <createTable tableName="ref_product_discount">
-            <column name="id" autoIncrement="true" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="product_id" type="BIGINT"/>
-            <column name="discount_id" type="BIGINT"/>
-            <column name="is_actual" type="BOOLEAN" defaultValue="false">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
+        <sql>
+            CREATE TABLE "project_T".ref_product_discount(
+                id BIGSERIAL NOT NULL PRIMARY KEY,
+                product_id BIGINT,
+                discount_id BIGINT,
+                is_actual BOOLEAN NOT NULL DEFAULT FALSE
+            );
+        </sql>
     </changeSet>
 
     <changeSet id="projectT-initialization-17" author="bullov" logicalFilePath="inc1.xml">
@@ -380,13 +313,13 @@
                 <tableExists tableName="role" schemaName="project_T"/>
             </not>
         </preConditions>
-        <createTable tableName="role">
-            <column name="id" autoIncrement="true" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="name" type="TEXT"/>
-            <column name="description" type="TEXT"/>
-        </createTable>
+        <sql>
+            CREATE TABLE "project_T".role(
+                id SERIAL NOT NULL PRIMARY KEY,
+                name TEXT,
+                description TEXT
+            );
+        </sql>
     </changeSet>
 
 </databaseChangeLog>

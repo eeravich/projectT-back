@@ -1,7 +1,6 @@
 package app;
 
-import app.entities.pojos.AccountPojo;
-import app.generated.jooq.tables.pojos.Account;
+import app.generated.projectT.tables.pojos.Account;
 import app.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
